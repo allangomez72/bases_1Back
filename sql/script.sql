@@ -56,8 +56,8 @@ CREATE TABLE Cuentas (
     saldo NUMBER(10) NOT NULL,
     id_tipo NUMBER(1) NOT NULL,
     id_cliente NUMBER(8) NOT NULL,
-    CONSTRAINT fk_id_tipo FOREIGN KEY (id_tipo) REFERENCES Tipos_cuentas(id),
-    CONSTRAINT fk_id_cliente FOREIGN KEY (id_cliente) REFERENCES Clientes(id)
+    CONSTRAINT fk_cuentas_id_tipo FOREIGN KEY (id_tipo) REFERENCES Tipos_cuentas(id),
+    CONSTRAINT fk_cuentas_id_cliente FOREIGN KEY (id_cliente) REFERENCES Clientes(id)
 );
 
 
@@ -65,7 +65,7 @@ CREATE TABLE Prestamos (
     id NUMBER(8) PRIMARY KEY,
     id_cliente NUMBER(8) NOT NULL,
     monto NUMBER(10,2) NOT NULL,
-    tasa_intere NUMBER(2,2) NOT NULL,
+    tasa_intere NUMBER(4,2) NOT NULL,
     fecha_deseembolso DATE NOT NULL,
     fecha_vencimiento DATE NOT NULL,
     saldo_pendiente NUMBER(10,2) NOT NULL,
@@ -73,6 +73,7 @@ CREATE TABLE Prestamos (
     CONSTRAINT fk_id_cliente FOREIGN KEY (id_cliente) REFERENCES Clientes(id),
     CONSTRAINT fk_id_estado FOREIGN KEY (id_estado) REFERENCES Estado_prestamos(id)
 );
+
 
 CREATE TABLE Tarjetas (
     id NUMBER(10) PRIMARY KEY,
@@ -85,8 +86,8 @@ CREATE TABLE Tarjetas (
     id_estado NUMBER(1)  NOT NULL,
     fecha_corte DATE NOT NULL,
     dia_ciclo NUMBER(2) NOT NULL,
-    CONSTRAINT fk_id_cliente FOREIGN KEY (id_cliente) REFERENCES Clientes (id),
-    CONSTRAINT fk_id_estado FOREIGN KEY (id_estado) REFERENCES Estado_tarjetas (id)
+    CONSTRAINT fk_id_cliente_tarjeta FOREIGN KEY (id_cliente) REFERENCES Clientes (id),
+    CONSTRAINT fk_id_estado_tarjeta FOREIGN KEY (id_estado) REFERENCES Estado_tarjetas (id)
 );
 
 CREATE TABLE Empleados (
@@ -106,16 +107,17 @@ CREATE TABLE Municipios (
     id NUMBER(3) PRIMARY KEY,
     municipio VARCHAR(30) NOT NULL,
     id_departamento NUMBER(10) NOT NULL,
-    CONSTRAINT fk_id_departamento FOREIGN KEY (id_departamento) REFERENCES Departamentos(id)
+    CONSTRAINT fk_id_departamento_municipio FOREIGN KEY (id_departamento) REFERENCES Departamentos(id)
 );
 
 CREATE TABLE Direcciones (
     id NUMBER(6) PRIMARY KEY,
-    direccion VARCHAR(15) NOT NULL,
+    direccion VARCHAR(50) NOT NULL,
     codigo_postal VARCHAR(5) NOT NULL,
     id_municipio NUMBER(3) NOT NULL,
     CONSTRAINT fk_id_municipio FOREIGN KEY (id_municipio) REFERENCES Municipios(id)
 );
+
 
 CREATE TABLE Agencias (
     id NUMBER(4) PRIMARY KEY,
@@ -123,43 +125,45 @@ CREATE TABLE Agencias (
     id_locacion NUMBER(4) NOT NULL,
     id_direccion NUMBER(6) NOT NULL,
     telefono VARCHAR(15) NOT NULL,
-    CONSTRAINT fk_id_locacion FOREIGN KEY (id_locacion) REFERENCES Locaciones(id),
-    CONSTRAINT fk_id_direccion FOREIGN KEY (id_direccion) REFERENCES Direcciones(id)
+    CONSTRAINT fk_id_locacion_agencia FOREIGN KEY (id_locacion) REFERENCES Locaciones(id),
+    CONSTRAINT fk_id_direccion_agencia FOREIGN KEY (id_direccion) REFERENCES Direcciones(id)
 );
 
 CREATE TABLE Transacciones (
     id NUMBER(10) PRIMARY KEY,
     id_cliente NUMBER(8) NOT NULL,
-    numero_origen NUMBER(6) NOT NULL,
-    numero_destino NUMBER(6) NOT NULL,
+    numero_origen VARCHAR(25) NOT NULL,
+    numero_destino VARCHAR(25) NOT NULL,
     id_tipo_transaccion NUMBER(1) NOT NULL,
-    monto NUMBER(5) NOT NULL,
-    fecha DATE NOT NULL,
-    hora TIME NOT NULL,
+    monto NUMBER(7,2) NOT NULL,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE NOT NULL,
+    hora TIMESTAMP NOT NULL,
     descripcion VARCHAR(50) NOT NULL,
     id_locacion NUMBER(4) NOT NULL,
-    CONSTRAINT fk_id_cliente FOREIGN KEY (id_cliente) REFERENCES Clientes(id),
-    CONSTRAINT fk_id_tipo_transaccion FOREIGN KEY (id_tipo_transaccion) REFERENCES Tipos_transacciones(id),
-    CONSTRAINT fk_id_locacion FOREIGN KEY (id_locacion) REFERENCES Locaciones(id)
+    CONSTRAINT fk_transaccion_id_cliente FOREIGN KEY (id_cliente) REFERENCES Clientes(id),
+    CONSTRAINT fk_transaccion_id_tipo_transaccion FOREIGN KEY (id_tipo_transaccion) REFERENCES Tipos_transacciones(id),
+    CONSTRAINT fk_transaccion_id_locacion FOREIGN KEY (id_locacion) REFERENCES Locaciones(id)
 );
 
--- Tipos
--- Locaciones
--- Empleados
--- Roles
--- Estados de prestamos
--- agencias
+
+-- Tipos S
+-- Locaciones S
+-- Empleados S
+-- Roles S
+-- Estados de prestamos S
+-- agencias S
 -- direcciones
--- municipios
--- departamentos
+-- municipios S
+-- departamentos S
 -- estados de tarjetas
 -- prestamos
 -- transacciones
 -- tipos de transacciones
 -- tarjeas de credito
--- clientes
--- cuentas
--- tipos de cuentas
+-- clientes S
+-- cuentas S
+-- tipos de cuentas S
 
 -- Insersiones de datos para la tabla Tipos
 INSERT INTO Tipos (id, instalacion) VALUES (1, 'Agencia');
@@ -263,7 +267,6 @@ INSERT INTO Clientes (id, nombre, apellido, telefono) VALUES (23, 'Patricia', 'G
 INSERT INTO Clientes (id, nombre, apellido, telefono) VALUES (24, 'Claudia', 'Hernandez', '+502 9012-3456');
 INSERT INTO Clientes (id, nombre, apellido, telefono) VALUES (25, 'Felipe', 'Martinez', '+502 0123-4567');
 
-
 -- Insersiones de datos para la tabla Cuentas
 INSERT INTO Cuentas (id, numero_cuenta, saldo, id_tipo, id_cliente) VALUES (1, '70186741-1', 256848.49, 1, 1);
 INSERT INTO Cuentas (id, numero_cuenta, saldo, id_tipo, id_cliente) VALUES (2, '42148275-2', 378588.21, 4, 2);
@@ -288,8 +291,6 @@ INSERT INTO Cuentas (id, numero_cuenta, saldo, id_tipo, id_cliente) VALUES (20, 
 INSERT INTO Cuentas (id, numero_cuenta, saldo, id_tipo, id_cliente) VALUES (21, '32165498-31', 120000.00, 2, 1);
 INSERT INTO Cuentas (id, numero_cuenta, saldo, id_tipo, id_cliente) VALUES (22, '65432109-32', 80000.00, 4, 11);
 INSERT INTO Cuentas (id, numero_cuenta, saldo, id_tipo, id_cliente) VALUES (23, '98765432-33', 45000.00, 1, 7);
-
-
 
 -- Insersiones de datos para la tabla Prestamos
 INSERT INTO Prestamos (id, id_cliente, monto, tasa_intere, fecha_deseembolso, fecha_vencimiento, saldo_pendiente, id_estado)
@@ -400,5 +401,98 @@ INSERT INTO Empleados (id, nombre, apellido, telefono, id_rol, id_departamento, 
 VALUES (10, 'Laura', 'Gomez', '+502 9879-8798', 10, 10, 10);
 
 -- Insersiones de datos para la tabla Municipios
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (1, 'Guatemala', 1);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (2, 'Villa Nueva', 1);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (3, 'Mixco', 1);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (4, 'Santa Lucía Cotzumalguapa', 5);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (5, 'Chimaltenango', 4);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (6, 'Escuintla', 5);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (7, 'San Miguel Petapa', 1);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (8, 'San Juan Sacatepéquez', 3);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (9, 'Sololá', 7);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (10, 'San Marcos', 12);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (11, 'Quetzaltenango', 9);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (12, 'Huehuetenango', 13);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (13, 'Retalhuleu', 11);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (14, 'Suchitepéquez', 10);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (15, 'Jalapa', 21);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (16, 'Chiquimula', 20);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (17, 'Izabal', 18);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (18, 'Zacapa', 19);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (19, 'Tiquisate', 5);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (20, 'Totonicapán', 8);
+INSERT INTO Municipios (id, municipio, id_departamento) VALUES (21, 'San Juan Comalapa', 4);
+
+-- Insersiones de datos para la tabla Direcciones
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (1, '12 calle 3-40 zona 10', '01010', 1);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (2, '1a avenida 7-55 zona 1', '01015', 2);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (3, 'Avenida 0 6-50 zona 4', '01011', 3);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (4, 'Calle Principal 10-20 zona 5', '05004', 4);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (5, 'Calle La Paz 2-25 zona 6', '04001', 5);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (6, 'Calle 1 5-90 zona 3', '05006', 6);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (7, 'Avenida 4 3-12 zona 7', '01020', 7);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (8, 'Calle 8 5-30 zona 8', '03001', 8);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (9, 'Calle Central 12-15 zona 9', '07001', 9);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (10, 'Calle 3 6-40 zona 2', '12001', 10);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (11, 'Calle 2 8-25 zona 11', '09001', 11);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (12, 'Avenida Nueva 7-15 zona 10', '13001', 12);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (13, 'Calle Principal 1-10 zona 11', '11001', 13);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (14, 'Calle 4 3-20 zona 12', '10001', 14);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (15, 'Calle 6 5-40 zona 13', '21001', 15);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (16, 'Calle 3 2-50 zona 14', '20001', 16);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (17, 'Calle 5 4-30 zona 15', '18001', 17);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (18, 'Calle 2 5-50 zona 16', '19001', 18);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (19, 'Calle 7 6-60 zona 5', '05003', 19);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (20, 'Calle 1 1-15 zona 18', '08001', 20);
+INSERT INTO Direcciones (id, direccion, codigo_postal, id_municipio) VALUES (21, 'Calle 4 3-25 zona 17', '04002', 21);
+
+-- Insersiones de datos para la tabla Agencias
+INSERT INTO Agencias (id, nombre, id_locacion, id_direccion, telefono) VALUES (1, 'Agencia 528', 1, 1, '+502 12345-678');
+INSERT INTO Agencias (id, nombre, id_locacion, id_direccion, telefono) VALUES (2, 'Agencia 123', 4, 2, '+502 8765-4321');
+INSERT INTO Agencias (id, nombre, id_locacion, id_direccion, telefono) VALUES (3, 'Agencia 456', 7, 3, '+502 4567-8912');
+INSERT INTO Agencias (id, nombre, id_locacion, id_direccion, telefono) VALUES (4, 'Agencia 789', 10, 4, '+502 9876-5432');
+INSERT INTO Agencias (id, nombre, id_locacion, id_direccion, telefono) VALUES (5, 'Agencia 987', 5, 5, '+502 1231-2312');
+INSERT INTO Agencias (id, nombre, id_locacion, id_direccion, telefono) VALUES (6, 'Agencia 654', 2, 6, '+502 3213-2132');
+INSERT INTO Agencias (id, nombre, id_locacion, id_direccion, telefono) VALUES (7, 'Agencia 321', 6, 7, '+502 4564-5645');
+INSERT INTO Agencias (id, nombre, id_locacion, id_direccion, telefono) VALUES (8, 'Agencia 159', 8, 8, '+502 6546-5465');
+INSERT INTO Agencias (id, nombre, id_locacion, id_direccion, telefono) VALUES (9, 'Agencia 753', 9, 9, '+502 7897-8978');
+INSERT INTO Agencias (id, nombre, id_locacion, id_direccion, telefono) VALUES (10, 'Agencia 258', 3, 10, '+502 9879-8798');
+
+-- Insersiones de datos para la tabla Transacciones
+INSERT INTO Transacciones (id, id_cliente, numero_origen, numero_destino, id_tipo_transaccion, monto, fecha_inicio, fecha_fin, hora, descripcion, id_locacion)
+VALUES (1, 1, '70186741-1', '42148275-2', 1, 1000.50, TO_DATE('2023-11-19', 'YYYY-MM-DD'), TO_DATE('2023-11-19', 'YYYY-MM-DD'), TO_TIMESTAMP('10:00:00.123', 'HH24:MI:SS.FF3'), 'Deposito', 1);
+
+INSERT INTO Transacciones (id, id_cliente, numero_origen, numero_destino, id_tipo_transaccion, monto, fecha_inicio, fecha_fin, hora, descripcion, id_locacion)
+VALUES (2, 1, '74601803-4', '18184518-5', 2, 1500.75, TO_DATE('2023-11-20', 'YYYY-MM-DD'), TO_DATE('2023-11-20', 'YYYY-MM-DD'), TO_TIMESTAMP('11:00:00.456', 'HH24:MI:SS.FF3'), 'Transferencia', 1);
+
+INSERT INTO Transacciones (id, id_cliente, numero_origen, numero_destino, id_tipo_transaccion, monto, fecha_inicio, fecha_fin, hora, descripcion, id_locacion)
+VALUES (3, 2, '30990159-7', '95199340-8', 1, 2000.00, TO_DATE('2023-11-21', 'YYYY-MM-DD'), TO_DATE('2023-11-21', 'YYYY-MM-DD'), TO_TIMESTAMP('12:00:00.789', 'HH24:MI:SS.FF3'), 'Retiro', 2);
+
+INSERT INTO Transacciones (id, id_cliente, numero_origen, numero_destino, id_tipo_transaccion, monto, fecha_inicio, fecha_fin, hora, descripcion, id_locacion)
+VALUES (4, 2, '73918292-10', '74733811-13', 2, 500.99, TO_DATE('2023-11-22', 'YYYY-MM-DD'), TO_DATE('2023-11-22', 'YYYY-MM-DD'), TO_TIMESTAMP('09:30:00.123', 'HH24:MI:SS.FF3'), 'Pago', 2);
+
+INSERT INTO Transacciones (id, id_cliente, numero_origen, numero_destino, id_tipo_transaccion, monto, fecha_inicio, fecha_fin, hora, descripcion, id_locacion)
+VALUES (5, 3, '92660876-15', '56773356-17', 1, 750.25, TO_DATE('2023-11-23', 'YYYY-MM-DD'), TO_DATE('2023-11-23', 'YYYY-MM-DD'), TO_TIMESTAMP('14:45:00.456', 'HH24:MI:SS.FF3'), 'Deposito', 1);
+
+INSERT INTO Transacciones (id, id_cliente, numero_origen, numero_destino, id_tipo_transaccion, monto, fecha_inicio, fecha_fin, hora, descripcion, id_locacion)
+VALUES (6, 3, '14336890-19', '95106634-21', 2, 1250.30, TO_DATE('2023-11-24', 'YYYY-MM-DD'), TO_DATE('2023-11-24', 'YYYY-MM-DD'), TO_TIMESTAMP('15:15:00.789', 'HH24:MI:SS.FF3'), 'Transferencia', 1);
+
+INSERT INTO Transacciones (id, id_cliente, numero_origen, numero_destino, id_tipo_transaccion, monto, fecha_inicio, fecha_fin, hora, descripcion, id_locacion)
+VALUES (7, 4, '99889802-20', '27531899-22', 1, 3000.00, TO_DATE('2023-11-25', 'YYYY-MM-DD'), TO_DATE('2023-11-25', 'YYYY-MM-DD'), TO_TIMESTAMP('16:00:00.123', 'HH24:MI:SS.FF3'), 'Retiro', 2);
+
+INSERT INTO Transacciones (id, id_cliente, numero_origen, numero_destino, id_tipo_transaccion, monto, fecha_inicio, fecha_fin, hora, descripcion, id_locacion)
+VALUES (8, 4, '37681508-25', '32851234-26', 2, 850.10, TO_DATE('2023-11-26', 'YYYY-MM-DD'), TO_DATE('2023-11-26', 'YYYY-MM-DD'), TO_TIMESTAMP('10:30:00.456', 'HH24:MI:SS.FF3'), 'Pago', 2);
+
+INSERT INTO Transacciones (id, id_cliente, numero_origen, numero_destino, id_tipo_transaccion, monto, fecha_inicio, fecha_fin, hora, descripcion, id_locacion)
+VALUES (9, 5, '12345678-27', '87654321-28', 1, 1200.80, TO_DATE('2023-11-27', 'YYYY-MM-DD'), TO_DATE('2023-11-27', 'YYYY-MM-DD'), TO_TIMESTAMP('11:15:00.789', 'HH24:MI:SS.FF3'), 'Deposito', 1);
+
+INSERT INTO Transacciones (id, id_cliente, numero_origen, numero_destino, id_tipo_transaccion, monto, fecha_inicio, fecha_fin, hora, descripcion, id_locacion)
+VALUES (10, 5, '45678912-29', '78912345-30', 2, 300.60, TO_DATE('2023-11-28', 'YYYY-MM-DD'), TO_DATE('2023-11-28', 'YYYY-MM-DD'), TO_TIMESTAMP('12:00:00.123', 'HH24:MI:SS.FF3'), 'Transferencia', 1);
 
 --DROP TABLE Tipos; para eliminar
+
+SELECT column_name, data_type, nullable
+FROM user_tab_columns
+WHERE table_name = 'TRANSACCIONES';
+
+SELECT * FROM Transacciones;
