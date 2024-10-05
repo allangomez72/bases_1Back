@@ -165,31 +165,27 @@ CREATE TABLE Transacciones (
     CONSTRAINT chk_monto_transaccion CHECK (monto > 0)
 );
 
+-- Para eliminar las tablas
 
+DROP TABLE Transacciones;
+DROP TABLE Agencias;
+DROP TABLE Direcciones;
+DROP TABLE Municipios;
+DROP TABLE Empleados;
+DROP TABLE Tarjetas;
+DROP TABLE Prestamos;
+DROP TABLE Cuentas;
+DROP TABLE Locaciones;
+DROP TABLE Roles;
+DROP TABLE Departamentos;
+DROP TABLE Tipos_transacciones;
+DROP TABLE Tipos_cuentas;
+DROP TABLE Estado_tarjetas;
+DROP TABLE Estado_prestamos;
+DROP TABLE Clientes;
+DROP TABLE Tipos;
 
--- Tipos S
--- Locaciones S
--- Empleados S
--- Roles S
--- Estados de prestamos S
--- agencias S
--- direcciones
--- municipios S
--- departamentos S
--- estados de tarjetas
--- prestamos
--- transacciones
--- tipos de transacciones
--- tarjeas de credito
--- clientes S
--- cuentas S
--- tipos de cuentas S
-
-
---DROP TABLE Tipos; para eliminar
-
-SELECT column_name, data_type, nullable
-FROM user_tab_columns
-WHERE table_name = 'TRANSACCIONES';
-
-SELECT * FROM Transacciones;
+--SELECT column_name, data_type, nullable
+--FROM user_tab_columns
+--WHERE table_name = 'TRANSACCIONES';
+--SELECT * FROM Transacciones;
