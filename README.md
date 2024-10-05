@@ -3,9 +3,15 @@ Laboratorio Sistemas de Bases de Datos 1
 
 ---
 
+## Descripcion del proyecto 1
+El Sistema Bancario - Banco JP Morgan es un proyecto académico que tiene como finalidad desarrollar un sistema de gestión bancaria utilizando bases de datos relacionales y SQL. El sistema está diseñado para simular la infraestructura de un banco ficticio que opera en Guatemala y se centra en la creación, administración y manejo de datos de clientes, cuentas, préstamos, tarjetas de crédito y transacciones financieras.
+
+El proyecto abarca desde la planificación y diseño del esquema relacional hasta la implementación de consultas avanzadas, permitiendo a los estudiantes de Ingeniería en Ciencias y Sistemas aplicar sus conocimientos en un entorno controlado que replica las operaciones esenciales de un banco real
+
 ## Herramientas Utilizadas
 - Excalidraw: Creación del modelo conceptual.
 - Oracle Data Modeler: Creación del modelo lógico y físico (notación Barker).
+- DataGrip: Para consultas y creacion de tablas en una bd dockerizada.
 
 ## Modelo Conceptual
 ![Modelo Conceptual](/img/MConceptual.png)
@@ -244,8 +250,58 @@ El modelo lógico y físico será desarrollado en `Oracle Data Modeler`, refleja
 ### Modelo Lógico
 ![Modelo_logico](/img/MLogico.png)
 
+# Relación y Cardinalidad del Modelo Lógico
+
+## 1. AGENCIAS - LOCACIONES
+- Una agencia es una sola locación, pero una locación puede tener varias agencias.
+
+## 2. LOCACION - EMPLEADO
+- Una locacion puede estar asociada a muchos empleados, pero un empleado debe tener una sola locacion.
+
+## 3. TIPO - LOCACION
+- Un tipo debe tener una locacion y una locacion debe tener un tipo
+
+## 4. EMPLEADOS - AGENCIAS
+- Un empleado está asignado a una sola agencia, pero una agencia puede tener varios empleados.
+
+## 5. EMPLEADOS - ROLES
+- Un empleado tiene un solo rol, pero un rol debe estar asignado a un empleado.
+
+## 6. AGENCIA - DIRECCION
+- Una agencia debe tener una direccion y una direccion debe de tener asociada una agencia
+
+## 7. DIRECCIONES - MUNICIPIOS
+- Una dirección está en un solo municipio, pero un municipio puede tener varias direcciones.
+
+## 8. MUNICIPIOS - DEPARTAMENTOS
+- Un municipio pertenece a un solo departamento, pero un departamento puede tener varios municipios.
+
+## 9. CLIENTES - CUENTAS
+- Un cliente puede tener múltiples cuentas, pero una cuenta está asociada a un solo cliente.
+
+## 10. CUENTAS - TIPOS DE CUENTA
+- Una cuenta tiene un solo tipo, pero un tipo de cuenta puede estar asociado a varias cuentas.
+
+## 11. TARJETAS DE CRÉDITO - CLIENTES
+- Un cliente puede tener múltiples tarjetas de crédito, pero una tarjeta está asociada a un solo cliente.
+
+## 12. ESTADOS DE LA TARJETA - TARJETAS DE CRÉDITO
+- Un estado de la tarjeta debe estar asociado a una tarjeta, y una tarjeta debe tener un solo estado de tarjeta.
+
+## 13. PRESTAMOS - CLIENTES
+- Un cliente puede tener múltiples préstamos, pero un préstamo está asociado a un solo cliente.
+
+## 14. ESTADOS DE PRESTAMO - PRESTAMO
+- Un prestamo debe de tener un solo estado, y un estado debe estar asociado a un solo prestamo.
+
+## 15. TRANSACCIONES - CUENTAS
+- Una cuenta puede estar relacionada con múltiples transacciones (como origen o destino), pero cada transacción involucra solo una cuenta como origen y otra como destino.
+
+## 16. TIPOS DE TRANSACCION - TRANSACCION
+- Una transaccion debe de tener un solo tipo de transaccion y un tipo de transaccion debe estar asociado a una sola transaccion.
+
 ### Modelo Fisico
-![Modelo_fisico](/img/)
+![Modelo_fisico](/img/MFisico.png)
 
 ### Implementacion de las tablas
 Para este proyecto se usara la sintaxis de ORACLE para la creacion de las tablas:
