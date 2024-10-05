@@ -252,174 +252,219 @@ Para este proyecto se usara la sintaxis de ORACLE para la creacion de las tablas
 #### Tabla TIPOS:
 ```SQL
 CREATE TABLE Tipos (
-    id NUMBER(1) PRIMARY KEY,
-    instalacion VARCHAR(25) NOT NULL
+    id_tipo NUMBER(1),
+    instalacion VARCHAR(50) NOT NULL,
+    CONSTRAINT pk_id_tipo PRIMARY KEY (id_tipo)
 );
 ```
-- Esta tabla almacena informacion sobre los tipos de locaciones que pueden existir. Se utiliza el campo `id` para la clave primaria e `instalacion` para el nombre del tipo de locacion. El tipo de dato `NUMBER(1)` solo puede aceptar numeros de 0-9 ya que por la convencion de como se ingresan los datos solo pueden haber 3 tipos, el tipo de dato `VARCHAR(25)` se eligio para el nombre de la instalacion por que una cadena de logitud variable.
+- EEsta tabla define los diferentes tipos de locaciones que existen dentro del sistema. El campo `id_tipo` es la clave primaria y está diseñado para aceptar un número de un solo dígito, representando los posibles tipos de locaciones que se pueden registrar. El campo instalacion almacena el nombre descriptivo del tipo de locación, y se eligió el tipo de dato `VARCHAR(50)` para permitir variabilidad en la longitud de los nombres.
 
 #### Tabla ESTADO DE PRESTAMOS
 ```SQL
 CREATE TABLE Estado_prestamos (
-    id NUMBER(1) PRIMARY KEY,
-    estado VARCHAR(25) NOT NULL
+    id_estado_prestamo NUMBER(1),
+    estado VARCHAR(20) NOT NULL,
+    CONSTRAINT pk_id_estado_prestamo PRIMARY KEY (id_estado_prestamo)
 );
 ```
-- Esta tabla almacena información del estado en el que se encuentran los prestamos, se utiliza el campo `id` para la clave primaria y `estado` para definir los estados que pueden existiri para un prestamo; el tipo de dato para id es `NUMBER(1)`porque por convencion solo existiran 3 estados y `VARCHAR(25)` porque la cadena del nombre de estado puede variar.
+- Esta tabla se encarga de registrar los diferentes estados en los que puede estar un préstamo (por ejemplo: activo, vencido, cancelado). El campo `id_prestamo` actúa como clave primaria y está limitado a un solo dígito, dado que por convención solo existirán tres estados. El campo `estado` utiliza `VARCHAR(20)` para permitir variaciones en la descripción del estado.
 
 #### Tabla ESTADOS DE TARJETA
 ```SQL
 CREATE TABLE Estado_tarjetas (
-    id NUMBER(1) PRIMARY KEY,
-    estado VARCHAR(25) NOT NULL
+    id_estado_tarjeta NUMBER(1),
+    estado VARCHAR(20) NOT NULL,
+    CONSTRAINT pk_id_estado_tarjeta PRIMARY KEY (id_estado_tarjeta)
 );
 ```
-- Esta tabla almacena información del estado en el que se encuentra una tarjeta, se usa el campo `id` para la clave primaria y `estado` para el nombre del estado en que se encuentra la tarjeta, el tipo de dato es `VARCHAR(25)` por que la caadena del nombre puede variar un poco.
+- La tabla Estado_tarjetas almacena los posibles estados de las tarjetas (por ejemplo: activa, bloqueada, cancelada). El campo `id_estado_tarjeta` es la clave primaria, y como solo existen unos pocos estados definidos, se usa `NUMBER(1)`. El campo `estado` es de tipo VARCHAR(25) para guardar el nombre del estado correspondiente.
 
 #### Tabla TIPOS DE CUENTAS
 ```SQL
 CREATE TABLE Tipos_cuentas (
-    id NUMBER(1) PRIMARY KEY,
-    tipo VARCHAR(25) NOT NULL
+    id_tipo_cuenta NUMBER(1),
+    tipo VARCHAR(30) NOT NULL,
+    CONSTRAINT pk_id_tipo_cuenta PRIMARY KEY (id_tipo_cuenta)
 );
+
 ```
 - Esta tabla almacena informacion de los tipos de cuenta que ofrece el banco, por convencion son 4 tipos por lo que para la clave primaria `Id` se uso el tipo de dato `NUMBER(1)` para que solo acepte 1 solo digito, y para `tipo` que es el campo para ingresar el nombre del tipo de cuenta se uso el tipo de dato `VARCHAR(25)` porque varia el nombre de los tipos de cuenta.
 
 #### Tabla TIPOS DE TRANSACCIONES
 ```SQL
 CREATE TABLE Tipos_transacciones (
-    id NUMBER(1) PRIMARY KEY,
-    tipo VARCHAR(25) NOT NULL
+    id_tipo_transaccion NUMBER(1),
+    tipo VARCHAR(30) NOT NULL,
+    CONSTRAINT pk_id_tipo_transaccion PRIMARY KEY (id_tipo_transaccion)
 );
 ```
-- 
+- Esta tabla guarda los diferentes tipos de transacciones que pueden realizar los clientes. El campo `id_tipo_transaccion` es la clave primaria, diseñada para aceptar solo un dígito, ya que el número de tipos de transacciones es limitado. El campo tipo utiliza `VARCHAR(25)` para permitir descripciones variables.
 
+### Tabla DEPARTAMENTOS
 ```SQL
 CREATE TABLE Departamentos (
-    id NUMBER(2) PRIMARY KEY,
-    departamento VARCHAR(25) NOT NULL
+    id_departamento NUMBER(2),
+    departamento VARCHAR(30) NOT NULL,
+    CONSTRAINT pk_id_departamento PRIMARY KEY (id_departamento)
 );
 ```
+- La tabla Departamentos almacena los nombres de los departamentos en los que la institución opera. El campo `id_departamento` es la clave primaria y está diseñado para aceptar un número de hasta dos dígitos. El campo `departamento` es un `VARCHAR(25)` que contiene el nombre del departamento.
 
+### Tabla ROLES
 ```SQL
 CREATE TABLE Roles (
-    id NUMBER(2) PRIMARY KEY,
-    rol VARCHAR(25) NOT NULL
+    id_rol NUMBER(2),
+    rol VARCHAR(30) NOT NULL,
+    CONSTRAINT pk_id_rol PRIMARY KEY (id_rol)
 );
-```
 
+```
+- Esta tabla define los roles de los empleados dentro de la institución. El campo `id_rol` es la clave primaria y el campo `rol` almacena el nombre del rol, utilizando `VARCHAR(25)` para adaptarse a nombres de diferentes longitudes.
+
+### Tabla LOCACIONES
 ```SQL
 CREATE TABLE Locaciones (
-    id NUMBER(4) PRIMARY KEY,
-    locacion VARCHAR(25) NOT NULL,
+    id_locacion NUMBER(4),
+    locacion VARCHAR(50) NOT NULL,
     id_tipo NUMBER(1) NOT NULL,
-    CONSTRAINT fk_id_tipo FOREIGN KEY (id_tipo) REFERENCES Tipos(id)
+    CONSTRAINT pk_id_locacion PRIMARY KEY (id_locacion),
+    CONSTRAINT fk_id_tipo FOREIGN KEY (id_tipo) REFERENCES Tipos(id_tipo)
 );
 ```
+- La tabla locaciones registra las distintas locaciones que puede llegar a tener ya sea Agecia o sucursal. El campo `id_locacion` es la clave primaria y el campo `locacion` es un `VARCHAR(50)` que guarda el nombre de dicha locacion, ademas id_tipo es una clave foranea que hace referencia al tipo de locacion que se tiene en la tabla `TIPOS`.
 
+### Tabla CLIENTES
 ```SQL
 CREATE TABLE Clientes (
-    id Number(8) PRIMARY KEY,
+    id_cliente NUMBER(8),
     nombre VARCHAR(30) NOT NULL,
     apellido VARCHAR(30) NOT NULL,
-    telefono VARCHAR(15) NOT NULL
-
+    telefono VARCHAR(15) NOT NULL,
+    CONSTRAINT pk_id_cliente PRIMARY KEY (id_cliente)
 );
 ```
+- Esta tabla almacena información personal de los clientes, como el nombre, apellido y telefono. El campo `id_cliente` es la clave primaria y está diseñado para aceptar hasta 8 dígitos, mientras que los campos nombre y apellido usan `VARCHAR(30)` para permitir una longitud razonable en los nombres.
 
+### Tabla CUENTAS
 ```SQL
 CREATE TABLE Cuentas (
-    id NUMBER(10) PRIMARY KEY,
+    id_cuenta NUMBER(10),
     numero_cuenta VARCHAR(25) NOT NULL,
     saldo NUMBER(10) NOT NULL,
-    id_tipo NUMBER(1) NOT NULL,
+    id_tipo_cuenta NUMBER(1) NOT NULL,
     id_cliente NUMBER(8) NOT NULL,
-    CONSTRAINT fk_cuentas_id_tipo FOREIGN KEY (id_tipo) REFERENCES Tipos_cuentas(id),
-    CONSTRAINT fk_cuentas_id_cliente FOREIGN KEY (id_cliente) REFERENCES Clientes(id)
+    CONSTRAINT pk_id_cuenta PRIMARY KEY (id_cuenta),
+    CONSTRAINT fk_cuentas_id_tipo FOREIGN KEY (id_tipo_cuenta) REFERENCES Tipos_cuentas(id_tipo_cuenta),
+    CONSTRAINT fk_cuentas_id_cliente FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente),
+    CONSTRAINT chk_saldo_cuenta CHECK (saldo >= 0)
 );
 ```
+- Esta tabla almacena los datos de las cuentas bancarias de los clientes. El campo id es la clave primaria, el campo numero_cuenta guarda el número de la cuenta, y el campo saldo almacena el saldo de la cuenta. Las claves foráneas id_tipo y id_cliente enlazan esta tabla con Tipos_cuentas y Clientes, respectivamente.
 
+### Tabla PRESTAMOS
 ```SQL
 CREATE TABLE Prestamos (
-    id NUMBER(8) PRIMARY KEY,
+    id_prestamo NUMBER(8),
     id_cliente NUMBER(8) NOT NULL,
     monto NUMBER(10,2) NOT NULL,
     tasa_intere NUMBER(4,2) NOT NULL,
-    fecha_deseembolso DATE NOT NULL,
+    fecha_desembolso DATE NOT NULL,
     fecha_vencimiento DATE NOT NULL,
     saldo_pendiente NUMBER(10,2) NOT NULL,
-    id_estado NUMBER(1) NOT NULL,
-    CONSTRAINT fk_id_cliente FOREIGN KEY (id_cliente) REFERENCES Clientes(id),
-    CONSTRAINT fk_id_estado FOREIGN KEY (id_estado) REFERENCES Estado_prestamos(id)
+    id_estado_prestamo NUMBER(1) NOT NULL,
+    CONSTRAINT pk_id_prestamo PRIMARY KEY (id_prestamo),
+    CONSTRAINT fk_id_cliente FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente),
+    CONSTRAINT fk_id_estado FOREIGN KEY (id_estado_prestamo) REFERENCES Estado_prestamos(id_estado_prestamo),
+    CONSTRAINT chk_monto_prestamo CHECK (monto > 0), 
+    CONSTRAINT chk_saldo_prestamo CHECK (saldo_pendiente >= 0)
 );
 ```
+- Esta tabla almacena los préstamos otorgados a los clientes. El campo `id_prestamo` es la clave primaria, id_cliente enlaza el préstamo con el cliente correspondiente, y monto almacena la cantidad del préstamo. tasa_intere representa el interés aplicado, mientras que fecha_desembolso y fecha_vencimiento indican las fechas de otorgamiento y finalización del préstamo, respectivamente. saldo_pendiente muestra la cantidad que aún debe ser pagada. id_estado_prestamo enlaza esta tabla con el estado del préstamo en la tabla Estado_prestamos.
 
+### Tabla TARJETAS
 ```SQL
 CREATE TABLE Tarjetas (
-    id NUMBER(10) PRIMARY KEY,
+    id_tarjeta NUMBER(10),
     id_cliente NUMBER(8) NOT NULL,
     numero_tarjeta VARCHAR(25) NOT NULL,
-    limimte_credito NUMBER(8,2) NOT NULL,
+    limite_credito NUMBER(8,2) NOT NULL,
     saldo_actual NUMBER(10,2) NOT NULL,
     fecha_emision DATE NOT NULL,
     fecha_vencimiento DATE NOT NULL,
-    id_estado NUMBER(1)  NOT NULL,
+    id_estado_tarjeta NUMBER(1) NOT NULL,
     fecha_corte DATE NOT NULL,
     dia_ciclo NUMBER(2) NOT NULL,
-    CONSTRAINT fk_id_cliente_tarjeta FOREIGN KEY (id_cliente) REFERENCES Clientes (id),
-    CONSTRAINT fk_id_estado_tarjeta FOREIGN KEY (id_estado) REFERENCES Estado_tarjetas (id)
+    CONSTRAINT pk_id_tarjeta PRIMARY KEY (id_tarjeta),
+    CONSTRAINT fk_id_cliente_tarjeta FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente),
+    CONSTRAINT fk_id_estado_tarjeta FOREIGN KEY (id_estado_tarjeta) REFERENCES Estado_tarjetas(id_estado_tarjeta),
+    CONSTRAINT chk_saldo_tarjeta CHECK (saldo_actual >= 0), 
+    CONSTRAINT chk_limite_credito CHECK (limite_credito > 0)
 );
 ```
+- Esta tabla almacena información sobre las tarjetas de crédito de los clientes. `id_tarjeta es la clave primaria, mientras que id_cliente relaciona la tarjeta con el cliente correspondiente. numero_tarjeta guarda el número de la tarjeta, y limite_credito establece el máximo de crédito disponible. saldo_actual refleja el saldo que el cliente tiene en la tarjeta. Las fechas de fecha_emision y fecha_vencimiento indican cuándo fue emitida la tarjeta y cuándo caduca. id_estado_tarjeta se conecta con el estado de la tarjeta en la tabla Estado_tarjetas, y fecha_corte junto con dia_ciclo permite gestionar el ciclo de facturación.
 
+### Tabla EMPLEADOS
 ```SQL
 CREATE TABLE Empleados (
-    id NUMBER(7) PRIMARY KEY,
+    id_empleado NUMBER(7),
     nombre VARCHAR(30) NOT NULL,
     apellido VARCHAR(30) NOT NULL,
     telefono VARCHAR(15) NOT NULL,
     id_rol NUMBER(2) NOT NULL,
     id_departamento NUMBER(2) NOT NULL,
     id_locacion NUMBER(4) NOT NULL,
-    CONSTRAINT fk_id_rol FOREIGN KEY (id_rol) REFERENCES Roles(id),
-    CONSTRAINT fk_id_departamento FOREIGN KEY (id_departamento) REFERENCES Departamentos(id),
-    CONSTRAINT fk_id_locacion FOREIGN KEY (id_locacion) REFERENCES Locaciones(id)
+    CONSTRAINT pk_id_empleado PRIMARY KEY (id_empleado),
+    CONSTRAINT fk_id_rol FOREIGN KEY (id_rol) REFERENCES Roles(id_rol),
+    CONSTRAINT fk_id_departamento FOREIGN KEY (id_departamento) REFERENCES Departamentos(id_departamento),
+    CONSTRAINT fk_id_locacion FOREIGN KEY (id_locacion) REFERENCES Locaciones(id_locacion)
 );
 ```
+- Esta tabla almacena los datos de los empleados del banco. El campo `id_empleado` es la clave primaria, y nombre y apellido almacenan la identificación del empleado. telefono guarda el número del empleado. Los campos id_rol, id_departamento y id_locacion permiten enlazar al empleado con su rol, departamento y localización específica dentro de la organización, referenciando a las tablas correspondientes ya que son claves foraneas.
 
+### Tabla MUNICIPIOS
 ```SQL
 CREATE TABLE Municipios (
-    id NUMBER(3) PRIMARY KEY,
+    id_municipio NUMBER(3),
     municipio VARCHAR(30) NOT NULL,
-    id_departamento NUMBER(10) NOT NULL,
-    CONSTRAINT fk_id_departamento_municipio FOREIGN KEY (id_departamento) REFERENCES Departamentos(id)
+    id_departamento NUMBER(2) NOT NULL,
+    CONSTRAINT pk_id_municipio PRIMARY KEY (id_municipio),
+    CONSTRAINT fk_id_departamento_municipio FOREIGN KEY (id_departamento) REFERENCES Departamentos(id_departamento)
 );
 ```
+- Esta tabla almacena los municipios donde se encuentran las agencias del banco. `id_municipio` es la clave primaria y `municipio` guarda el nombre del municipio. El campo `id_departamento` se usa para relacionar a su respectivo departamento, ademas es la clave foranea que hace referencia a la tabla de `DEPARTAMENTOS`.
 
+### Tabla DIRECCIONES
 ```SQL
 CREATE TABLE Direcciones (
-    id NUMBER(6) PRIMARY KEY,
+    id_direccion NUMBER(6),
     direccion VARCHAR(50) NOT NULL,
     codigo_postal VARCHAR(5) NOT NULL,
     id_municipio NUMBER(3) NOT NULL,
-    CONSTRAINT fk_id_municipio FOREIGN KEY (id_municipio) REFERENCES Municipios(id)
+    CONSTRAINT pk_id_direccion PRIMARY KEY (id_direccion),
+    CONSTRAINT fk_id_municipio FOREIGN KEY (id_municipio) REFERENCES Municipios(id_municipio)
 );
 ```
+- Esta tabla almacena las direcciones de las agencias del banco. `id_direccion` es la clave primaria, direccion guarda la dirección física y codigo_postal el código postal correspondiente. El campo `id_municipio` enlaza la dirección con su municipio correspondiente, ademas es la clave foranea que hace referencia a la tabla `MUNICIPIOS`.
 
+### Tabla AGENCIAS
 ```SQL
 CREATE TABLE Agencias (
-    id NUMBER(4) PRIMARY KEY,
+    id_agencia NUMBER(4),
     nombre VARCHAR(30) NOT NULL,
     id_locacion NUMBER(4) NOT NULL,
     id_direccion NUMBER(6) NOT NULL,
     telefono VARCHAR(15) NOT NULL,
-    CONSTRAINT fk_id_locacion_agencia FOREIGN KEY (id_locacion) REFERENCES Locaciones(id),
-    CONSTRAINT fk_id_direccion_agencia FOREIGN KEY (id_direccion) REFERENCES Direcciones(id)
+    CONSTRAINT pk_id_agencia PRIMARY KEY (id_agencia),
+    CONSTRAINT fk_id_locacion_agencia FOREIGN KEY (id_locacion) REFERENCES Locaciones(id_locacion),
+    CONSTRAINT fk_id_direccion_agencia FOREIGN KEY (id_direccion) REFERENCES Direcciones(id_direccion)
 );
 ```
+- Esta tabla almacena información sobre las agencias del banco. id_agencia es la clave primaria y nombre guarda el nombre de la agencia. Tanto `id_locacion` como `id_direccion` se utilizan como claves foraneas para relacionar con las tablas respectivas, ademas del campo telefono que almacena el numero para el contacto de la agencia.
 
+### Tabla TRANSACCIONES
 ```SQL
 CREATE TABLE Transacciones (
-    id NUMBER(10) PRIMARY KEY,
+    id_transaccion NUMBER(10),
     id_cliente NUMBER(8) NOT NULL,
     numero_origen VARCHAR(25) NOT NULL,
     numero_destino VARCHAR(25) NOT NULL,
@@ -428,10 +473,13 @@ CREATE TABLE Transacciones (
     fecha_inicio DATE NOT NULL,
     fecha_fin DATE NOT NULL,
     hora TIMESTAMP NOT NULL,
-    descripcion VARCHAR(50) NOT NULL,
+    descripcion VARCHAR(50) NOT NULL, 
     id_locacion NUMBER(4) NOT NULL,
-    CONSTRAINT fk_transaccion_id_cliente FOREIGN KEY (id_cliente) REFERENCES Clientes(id),
-    CONSTRAINT fk_transaccion_id_tipo_transaccion FOREIGN KEY (id_tipo_transaccion) REFERENCES Tipos_transacciones(id),
-    CONSTRAINT fk_transaccion_id_locacion FOREIGN KEY (id_locacion) REFERENCES Locaciones(id)
+    CONSTRAINT pk_id_transaccion PRIMARY KEY (id_transaccion),
+    CONSTRAINT fk_transaccion_id_cliente FOREIGN KEY (id_cliente) REFERENCES Clientes(id_cliente),
+    CONSTRAINT fk_transaccion_id_tipo_transaccion FOREIGN KEY (id_tipo_transaccion) REFERENCES Tipos_transacciones(id_tipo_transaccion),
+    CONSTRAINT fk_transaccion_id_locacion FOREIGN KEY (id_locacion) REFERENCES Locaciones(id_locacion),
+    CONSTRAINT chk_monto_transaccion CHECK (monto > 0)
 );
 ```
+- Esta tabla almacena los detalles de las transacciones realizadas por los clientes, `id_transaccion` es la clave primaria, mientras que `id_cliente` relaciona la transacción con el cliente correspondiente. numero_origen y numero_destino guardan los números de cuenta de origen y destino. id_tipo_transaccion se utiliza para clasificar el tipo de transacción, referenciando la tabla Tipos_transacciones. El `monto` representa la cantidad transaccionada, y las fechas `fecha_inicio` y `fecha_fin` indican el periodo de la transacción y descripcion proporciona información adicional sobre la transacción, cabe destacar que se tiene una restriccion para realizar cualquier transaccion que debe de ser mayor a 0.
